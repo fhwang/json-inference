@@ -119,7 +119,7 @@ class JsonInferenceTestCase < Test::Unit::TestCase
     end
 
     should "display a different sort of selector" do
-      assert_match(/:root > .items:nth-child\(\): 6 children total$/, @string)
+      assert_match(/:root > .items:nth-child\(\): 6 children$/, @string)
     end
 
     should "count types of children" do
@@ -143,6 +143,19 @@ class JsonInferenceTestCase < Test::Unit::TestCase
     should "count value classes in hashes too" do
       assert_match(/String: 75%/, @string)
       assert_match(/Fixnum: 25%/, @string)
+    end
+  end
+  
+  context "empty array" do
+    setup do
+      report = JsonInference.new_report
+      report << {items: []}
+      report << {items: []}
+      @string = report.to_s
+    end
+    
+    should "display that there are zero children" do
+      assert_match(/:root > .items:nth-child\(\): 0 children$/, @string)
     end
   end
 end

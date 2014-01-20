@@ -22,6 +22,7 @@ module JsonInference
           @sub_nodes[key] << sub_value
         end
       elsif value.is_a?(Array)
+        @sub_nodes[:nth_child]
         value.each do |sub_value|
           @sub_nodes[:nth_child] << sub_value
         end
@@ -51,7 +52,7 @@ module JsonInference
     end
 
     def total_count
-      @value_classes.values.inject { |sum, i| sum + i }
+      @value_classes.values.inject { |sum, i| sum + i } || 0
     end
   end
 
@@ -93,7 +94,7 @@ module JsonInference
     end
 
     def selector_line(documents_count)
-      "#{indent}#{selector}: #{total_count} children total\n"
+      "#{indent}#{selector}: #{total_count} child#{'ren' unless total_count == 1}\n"
     end
 
     def to_s(documents_count)
@@ -140,7 +141,7 @@ module JsonInference
     end
 
     def to_s
-      str = "JsonInference report: #{@documents.size} documents total\n"
+      str = "JsonInference report: #{@documents.size} documents\n"
       str << @root.to_s(@documents.size)
       str
     end
