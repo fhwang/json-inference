@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Json::Inference::VERSION
   spec.authors       = ["Francis Hwang"]
   spec.email         = ["sera@fhwang.net"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Given a bunch of JSON documents that are assumed to be similar, collects info about common structure.}
+  spec.summary       = %q{Given a bunch of JSON documents that are assumed to be similar, collects info about common structure.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
