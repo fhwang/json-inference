@@ -10,17 +10,15 @@ module JsonInference
     end
 
     def selector_line(documents_count)
-      "#{indent}#{selector}: #{total_count} child#{'ren' unless total_count == 1}\n"
+      "#{indent}#{selector}: #{@values.size} child#{'ren' unless @values.size == 1}\n"
     end
 
     def to_s(documents_count)
       str = ""
       str << selector_line(documents_count)
-      @value_classes.each do |klass, count|
-        str << "  #{indent}#{klass}: #{(count / total_count.to_f * 100).round}%\n"
-      end
+      str << @values.to_s(indent)
       each_sub_node do |sub_node|
-        str << sub_node.to_s(total_count)
+        str << sub_node.to_s(@values.size)
       end
       str
     end

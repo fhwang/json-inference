@@ -1,7 +1,7 @@
 module JsonInference
   class BaseNode
     def initialize
-      @value_classes = Hash.new 0
+      @values = NodeValuesCollection.new
       @sub_nodes = Hash.new { |h,k| 
         if k == :nth_child
           sub_node = JsonInference::NthChildNode.new(self)
@@ -23,13 +23,7 @@ module JsonInference
           @sub_nodes[:nth_child] << sub_value
         end
       end
-      if value.class == String && value =~ /^(\d){4}-(\d){2}-(\d){2}T(\d){2}:(\d){2}:(\d){2}\.(\d){3}Z$/
-        @value_classes[Date] += 1
-      elsif [true, false].include?(value)
-        @value_classes['Boolean'] += 1
-      else
-        @value_classes[value.class] += 1
-      end
+      @values << value
     end
 
     def each_sub_node
@@ -45,10 +39,6 @@ module JsonInference
 
     def indent
       '  ' * indent_level
-    end
-
-    def total_count
-      @value_classes.values.inject { |sum, i| sum + i } || 0
     end
   end
 end

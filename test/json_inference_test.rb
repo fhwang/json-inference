@@ -158,4 +158,18 @@ class JsonInferenceTestCase < Test::Unit::TestCase
       assert_match(/:root > .items:nth-child\(\): 0 children$/, @string)
     end
   end
+
+  context "field with empty strings" do
+    setup do
+      report = JsonInference.new_report
+      report << {foo: 'one'}
+      report << {foo: '', bar: 'ONE'}
+      report << {foo: '', baz: 'won'}
+      @string = report.to_s
+    end
+
+    should "note how likely it is to be empty" do
+      assert_match(/String: 100%, 67% empty/, @string)
+    end
+  end
 end

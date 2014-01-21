@@ -3,6 +3,10 @@ module JsonInference
     Report.new
   end
 
+  def self.percent_string(numerator, denominator)
+    "#{(numerator / denominator.to_f * 100).round}%"
+  end
+
   class Report
     def initialize
       @documents = []
@@ -18,6 +22,59 @@ module JsonInference
       str = "JsonInference report: #{@documents.size} documents\n"
       str << @root.to_s(@documents.size)
       str
+    end
+  end
+
+  class NodeValuesCollection
+    def initialize
+      @value_counters = Hash.new { |h,k| h[k] = ValueCounter.new(k) }
+    end
+
+    def <<(value)
+      if value.class == String && value =~ /^(\d){4}-(\d){2}-(\d){2}T(\d){2}:(\d){2}:(\d){2}\.(\d){3}Z$/
+        @value_counters[Date] << value
+      elsif [true, false].include?(value)
+        @value_counters['Boolean'] << value
+      else
+        @value_counters[value.class] << value
+      end
+    end
+
+    def size
+      @value_counters.values.inject(0) { |sum, counter| sum + counter.size } || 0
+    end
+
+    def to_s(indent)
+      str = ""
+      @value_counters.values.each do |value_counter|
+        str << "  #{indent}#{value_counter.to_s(size)}\n"
+      end
+      str
+    end
+
+    class ValueCounter
+      attr_reader :size
+
+      def initialize(reported_class)
+        @reported_class = reported_class
+        @size = 0
+        @empties = 0
+      end
+
+      def <<(value)
+        @size += 1
+        if [Array, String].include?(@reported_class)
+          @empties += 1 if value.empty?
+        end
+      end
+
+      def to_s(all_values_count)
+        str = "#{@reported_class}: #{JsonInference.percent_string(size, all_values_count)}"
+        if [Array, String].include?(@reported_class)
+          str << ", #{JsonInference.percent_string(@empties, size)} empty"
+        end
+        str
+      end
     end
   end
 end
