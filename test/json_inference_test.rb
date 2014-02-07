@@ -172,4 +172,19 @@ class JsonInferenceTestCase < Test::Unit::TestCase
       assert_match(/String: 100%, 67% empty/, @string)
     end
   end
+
+  context "field with the same value most of the time" do
+    setup do
+      report = JsonInference.new_report
+      19.times do
+        report << {something: true}
+      end
+      report << {something: false}
+      @string = report.to_s
+    end
+
+    should "note that the value is almost always the same" do
+      assert_match(/Boolean: 100%, 95% true/, @string)
+    end
+  end
 end

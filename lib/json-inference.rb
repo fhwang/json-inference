@@ -59,9 +59,11 @@ module JsonInference
         @reported_class = reported_class
         @size = 0
         @empties = 0
+        @values_by_count = Hash.new(0)
       end
 
       def <<(value)
+        @values_by_count[value] += 1
         @size += 1
         if [Array, String].include?(@reported_class)
           @empties += 1 if value.empty?
@@ -70,6 +72,13 @@ module JsonInference
 
       def to_s(all_values_count)
         str = "#{@reported_class}: #{JsonInference.percent_string(size, all_values_count)}"
+        primary_value_record = @values_by_count.detect { |value, count|
+          count / size.to_f >= 0.9
+        }
+        if primary_value_record
+          primary_value, count = primary_value_record
+          str << ", #{JsonInference.percent_string(count, size)} #{primary_value.inspect}"
+        end
         if [Array, String].include?(@reported_class)
           str << ", #{JsonInference.percent_string(@empties, size)} empty"
         end
