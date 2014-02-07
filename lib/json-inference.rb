@@ -4,7 +4,7 @@ module JsonInference
   end
 
   def self.percent_string(numerator, denominator)
-    "#{(numerator / denominator.to_f * 100).round}%"
+    sprintf("%.2f%", numerator / denominator.to_f * 100)
   end
 
   class Report

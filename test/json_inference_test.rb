@@ -15,11 +15,11 @@ class JsonInferenceTestCase < Test::Unit::TestCase
 
     should "count selectors as part of the total" do
       assert_match(/:root > .foo/, @string)
-      assert_match(/3\/3 \(100%\)/, @string)
+      assert_match(/3\/3 \(100.00%\)/, @string)
     end
 
     should "count classes per selector" do
-      assert_match(/String: 100%/, @string)
+      assert_match(/String: 100.00%/, @string)
     end
 
     should "sort report by selector" do
@@ -36,7 +36,7 @@ class JsonInferenceTestCase < Test::Unit::TestCase
     end
 
     should "recognize date fields based on format" do
-      assert_match(/Date: 100%/, @string)
+      assert_match(/Date: 100.00%/, @string)
     end
   end
 
@@ -49,7 +49,7 @@ class JsonInferenceTestCase < Test::Unit::TestCase
     end
 
     should "group boolean fields" do
-      assert_match(/Boolean: 100%/, @string)
+      assert_match(/Boolean: 100.00%/, @string)
     end
   end
 
@@ -63,11 +63,11 @@ class JsonInferenceTestCase < Test::Unit::TestCase
 
     should "show full selectors" do
       assert_match(/:root > .embedded > .title/, @string)
-      assert_match(/2\/2 \(100%\)/, @string)
+      assert_match(/2\/2 \(100.00%\)/, @string)
     end
 
     should "count classes per selector" do
-      assert_match(/String: 100%/, @string)
+      assert_match(/String: 100.00%/, @string)
     end
 
     should "sort report by selector" do
@@ -75,7 +75,7 @@ class JsonInferenceTestCase < Test::Unit::TestCase
     end
     
     should "display count for the overall hash too" do
-      assert_match(/:root > .embedded: 2\/2 \(100%\)/, @string)
+      assert_match(/:root > .embedded: 2\/2 \(100.00%\)/, @string)
     end
   end
 
@@ -88,7 +88,7 @@ class JsonInferenceTestCase < Test::Unit::TestCase
     end
 
     should "calculate percentages related to occurrences of the field" do
-      assert_match(/String: 100%/, @string)
+      assert_match(/String: 100.00%/, @string)
     end
   end
 
@@ -101,8 +101,8 @@ class JsonInferenceTestCase < Test::Unit::TestCase
     end
 
     should "display all top-level classes" do
-      assert_match(/Hash: 50%/, @string)
-      assert_match(/String: 50%/, @string)
+      assert_match(/Hash: 50.00%/, @string)
+      assert_match(/String: 50.00%/, @string)
     end
 
     should "display sub nodes" do
@@ -123,7 +123,7 @@ class JsonInferenceTestCase < Test::Unit::TestCase
     end
 
     should "count types of children" do
-      assert_match(/Fixnum: 100%/, @string)
+      assert_match(/Fixnum: 100.00%/, @string)
     end
   end
 
@@ -136,13 +136,13 @@ class JsonInferenceTestCase < Test::Unit::TestCase
     end
     
     should "count elements in each hash" do
-      assert_match(/:root > .items:nth-child\(\) > .one: 4\/4 \(100%\)$/, @string)
-      assert_match(/:root > .items:nth-child\(\) > .two: 4\/4 \(100%\)$/, @string)
+      assert_match(/:root > .items:nth-child\(\) > .one: 4\/4 \(100.00%\)$/, @string)
+      assert_match(/:root > .items:nth-child\(\) > .two: 4\/4 \(100.00%\)$/, @string)
     end
 
     should "count value classes in hashes too" do
-      assert_match(/String: 75%/, @string)
-      assert_match(/Fixnum: 25%/, @string)
+      assert_match(/String: 75.00%/, @string)
+      assert_match(/Fixnum: 25.00%/, @string)
     end
   end
   
@@ -169,7 +169,7 @@ class JsonInferenceTestCase < Test::Unit::TestCase
     end
 
     should "note how likely it is to be empty" do
-      assert_match(/String: 100%, 67% empty/, @string)
+      assert_match(/String: 100.00%, 66.67% empty/, @string)
     end
   end
 
@@ -184,7 +184,7 @@ class JsonInferenceTestCase < Test::Unit::TestCase
     end
 
     should "note that the value is almost always the same" do
-      assert_match(/Boolean: 100%, 95% true/, @string)
+      assert_match(/Boolean: 100.00%, 95.00% true/, @string)
     end
   end
 end
