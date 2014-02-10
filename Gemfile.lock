@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    json-inference (0.0.2)
+    json-inference (0.0.3)
 
 GEM
   remote: https://rubygems.org/
